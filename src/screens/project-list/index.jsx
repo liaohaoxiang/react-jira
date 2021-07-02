@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import qs from 'qs';
 
-import { cleanObject } from '../../utils/index';
+import { cleanObject, useMount, useDebounce } from '../../utils/index';
 import {SearchPanel} from './search-panel'
 import {List} from './list';
 
@@ -14,22 +14,24 @@ export const ProjectListScreen = () => {
   })
   const [users, setUsers] = useState([])
   const [list, setList] = useState([])
+  
+  const debouncedparam = useDebounce(param, 1000) // 自定义hook
 
   useEffect(() => {
-    fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(param))}`).then(async (res) => {
+    fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(debouncedparam))}`).then(async (res) => {
       if(res.ok) {
         setList(await res.json())
       }
     })
-  }, [param])
+  }, [debouncedparam])
 
-  useEffect(() => {
+  useMount(() => {
     fetch(`${apiUrl}/users`).then(async (res) => {
       if(res.ok) {
         setUsers(await res.json())
       }
     })
-  }, [param])
+  })
   return <div>
     <SearchPanel users={users} param={param} setParam={setParam}/>
     <List users={users} list={list}/>
