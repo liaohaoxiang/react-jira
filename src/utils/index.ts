@@ -8,7 +8,7 @@ export const isFalsy = (value: any) => (value === 0 ? false : !value);
 
 /**
  * 清除没有值的对象并返回
- * @params {Object} obj 传入对象
+ * @param {Object} obj 传入对象
  * @returns {Object} result 返回新对象
  */
 export const cleanObject = (obj: any) => {
@@ -22,14 +22,24 @@ export const cleanObject = (obj: any) => {
   return result;
 };
 
-export const useMount = (cb: any) => {
+/**
+ * 模仿Mount生命周期Hook
+ * @param cb 回调函数
+ */
+export const useMount = (cb: () => void) => {
   useEffect(() => {
     cb();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 
-export const useDebounce = (value: any, delay: number) => {
+/**
+ * 防抖hook
+ * @param value 传入需要防抖的值
+ * @param delay 防抖时间间隔
+ * @returns 防抖完成后的值
+ */
+export const useDebounce = (value: any, delay?: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
     // 每次在value变化后, 设置一个定时器
