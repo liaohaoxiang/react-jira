@@ -31,13 +31,17 @@ export const ProjectListScreen = () => {
 
   // 请求List
   useEffect(() => {
-    fetch(
-      `${apiUrl}/projects?${qs.stringify(cleanObject(debouncedparam))}`
-    ).then(async (res) => {
+    // useEffect不可直接用async,只能这样调用
+    const fetchData = async () => {
+      const querystring = cleanObject(debouncedparam);
+      const res = await fetch(
+        `${apiUrl}/projects?${qs.stringify(querystring)}`
+      );
       if (res.ok) {
         setList(await res.json());
       }
-    });
+    };
+    fetchData();
   }, [debouncedparam]);
   return (
     <div>

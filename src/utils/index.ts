@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
  * @param value 需要判断的值
  * @returns {boolean} true | false
  */
-export const isFalsy = (value: any) => (value === 0 ? false : !value);
+export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 
 /**
  * 清除没有值的对象并返回
@@ -34,12 +34,12 @@ export const useMount = (cb: () => void) => {
 };
 
 /**
- * 防抖hook
+ * 防抖hook 泛型使用
  * @param value 传入需要防抖的值
  * @param delay 防抖时间间隔
  * @returns 防抖完成后的值
  */
-export const useDebounce = (value: any, delay?: number) => {
+export const useDebounce = <V>(value: V, delay?: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
     // 每次在value变化后, 设置一个定时器
