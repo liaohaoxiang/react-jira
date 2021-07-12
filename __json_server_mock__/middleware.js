@@ -15,21 +15,6 @@ module.exports = (req, res, next) => {
   next();
 };
 
-var num = 5;
-for (var i = 1; i <= num; i++) {
-  for (a = 1; a <= i - 1; a++) {
-    document.write("&nbsp;");
-  }
-  for (var j = 1; j <= 2 * (num - i) + 1; j++) {
-    if (j === 1 || j === 2 * (num - i) + 1) {
-      document.write("*");
-    } else {
-      document.write("&nbsp;");
-    }
-  }
-  document.write("<br/>");
-}
-
 // function output(num){
 //   for (var row = 0; row < num; row ++){
 //     console.loh(row)
