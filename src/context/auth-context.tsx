@@ -1,4 +1,6 @@
 import React, { ReactNode, useState, createContext, useContext } from "react";
+import { http } from "utils/http";
+import { useMount } from "utils/index";
 import * as auth from "../auth-provider";
 import { User } from "../screens/project-list/search-panel";
 
@@ -6,6 +8,18 @@ interface AuthForm {
   username: string;
   password: string;
 }
+
+// 初始化user
+const bootstrapUser = async () => {
+  let user = null;
+  const token = auth.getToken();
+  if (token) {
+    const data = await http("me", { token });
+    user = data.user;
+  }
+  return user;
+};
+
 const AuthContext = createContext<
   | {
       user: User | null;
@@ -24,6 +38,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = (form: AuthForm) => auth.login(form).then(setUser);
   const register = (form: AuthForm) => auth.register(form).then(setUser);
   const logout = () => auth.logout().then(() => setUser(null));
+
+  //加载Providr时,调用验证是否过期token
+  useMount(() => bootstrapUser().then(setUser));
+
   return (
     <AuthContext.Provider
       children={children}
